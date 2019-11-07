@@ -9,10 +9,10 @@ import org.ghrobotics.lib.wrappers.FalconSingleSolenoid
 import org.ghrobotics.lib.wrappers.FalconSolenoid
 
 object Intake : FalconSubsystem() {
-    val leftMotor = FalconSRX(Constants.Intake.kLeftId, DefaultNativeUnitModel)
-    val rightMotor = FalconSRX(Constants.Intake.kRightId, DefaultNativeUnitModel)
+    private val leftMotor = FalconSRX(Constants.Intake.kLeftId, DefaultNativeUnitModel)
+    private val rightMotor = FalconSRX(Constants.Intake.kRightId, DefaultNativeUnitModel)
 
-    val solenoid1 = FalconSingleSolenoid(Constants.Intake.kIntakeSolenoid1Id, Constants.Intake.kPCMId)
+    private val solenoid1 = FalconSingleSolenoid(Constants.Intake.kIntakeSolenoid1Id, Constants.Intake.kPCMId)
 
     fun wheelIntake(percent: Double) {
         leftMotor.setDutyCycle(percent)
