@@ -17,12 +17,7 @@ object Intake : FalconSubsystem() {
     // Create Solenoids
     private val solenoid1 = FalconSingleSolenoid(Constants.Intake.kIntakeSolenoid1Id, Constants.Intake.kPCMId)
     private val solenoid2 = FalconSingleSolenoid(Constants.Intake.kIntakeSolenoid2Id, Constants.Intake.kPCMId)
-
     private val solenoid3 = FalconSingleSolenoid(Constants.Intake.kIntakeSolenoid3Id, Constants.Intake.kPCMId)
-    private val solenoid4 = FalconSingleSolenoid(Constants.Intake.kIntakeSolenoid4Id, Constants.Intake.kPCMId)
-
-    private val solenoid5 = FalconSingleSolenoid(Constants.Intake.kIntakeSolenoid5Id, Constants.Intake.kPCMId)
-    private val solenoid6 = FalconSingleSolenoid(Constants.Intake.kIntakeSolenoid6Id, Constants.Intake.kPCMId)
 
     // Spins the green compliant wheels to intake the cubes
     fun wheelIntake(percent: Double) {
@@ -31,7 +26,7 @@ object Intake : FalconSubsystem() {
 
     // Sets the solenoids to hold the cubes in place
     fun clampSolenoids(intake: Boolean) {
-        listOf(solenoid1, solenoid2, solenoid3, solenoid4, solenoid5, solenoid6).forEach { solenoid ->
+        listOf(solenoid1, solenoid2, solenoid3).forEach { solenoid ->
             solenoid.state = if (intake) FalconSolenoid.State.Forward else FalconSolenoid.State.Reverse
         }
     }

@@ -54,12 +54,7 @@ object Constants {
         const val kPCMId = 41
         const val kIntakeSolenoid1Id = 1
         const val kIntakeSolenoid2Id = 2
-
         const val kIntakeSolenoid3Id = 3
-        const val kIntakeSolenoid4Id = 4
-
-        const val kIntakeSolenoid5Id = 5
-        const val kIntakeSolenoid6Id = 6
 
         // Motor Ids
         const val kLeftWheelId = 5
@@ -89,8 +84,8 @@ object Constants {
         val kNativeUnitModel = NativeUnitLengthModel(1440.nativeUnits, kWheelRadius)
 
         // PID
-        const val kP = 0.0
-        const val kD = 0.0
+        const val kP = 0.2
+        const val kD = 0.3 // .18
 
         // Current Limiting
         val kPeakCurrentLimit = 68.amps

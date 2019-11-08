@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry
 import org.ghrobotics.frc2020.Constants
 import org.ghrobotics.lib.mathematics.units.Meter
 import org.ghrobotics.lib.mathematics.units.SIUnit
+import org.ghrobotics.lib.mathematics.units.derived.volts
 import org.ghrobotics.lib.mathematics.units.nativeunit.DefaultNativeUnitModel
 import org.ghrobotics.lib.motors.ctre.FalconSRX
 import org.ghrobotics.lib.physics.MotorCharacterization
@@ -36,15 +37,6 @@ object Drivetrain : FalconWestCoastDrivetrain() {
     // Motor characterization
     override val leftCharacterization = MotorCharacterization<Meter>(SIUnit(0.0), SIUnit(0.0), SIUnit(0.0))
     override val rightCharacterization = MotorCharacterization<Meter>(SIUnit(0.0), SIUnit(0.0), SIUnit(0.0))
-
-    // Emergency management
-    override fun activateEmergency() {
-        zeroClosedLoopGains()
-    }
-
-    override fun recoverFromEmergency() {
-        setClosedLoopGains()
-    }
 
     // Initialize follower motors and other motor configs
     init {
@@ -85,6 +77,16 @@ object Drivetrain : FalconWestCoastDrivetrain() {
 
         defaultCommand = ManualDriveCommand()
     }
+
+    fun setVoltage(leftOutput: Double, rightOutput: Double) {
+        leftMotor.setVoltage(leftOutput.volts)
+        rightMotor.setVoltage(rightOutput.volts)
+    }
+
+    // Emergency management
+    override fun activateEmergency() = zeroClosedLoopGains()
+
+    override fun recoverFromEmergency() = setClosedLoopGains()
 
     /**
      * Configures closed loop gains for the drivetrain.
