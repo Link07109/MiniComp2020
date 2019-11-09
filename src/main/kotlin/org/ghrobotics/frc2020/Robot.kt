@@ -1,28 +1,19 @@
-/*
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
- * Copyright 2019, Green Hope Falcons
- */
-
 package org.ghrobotics.frc2020
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
-import org.ghrobotics.frc2020.subsystems.Drivetrain
-import org.ghrobotics.frc2020.subsystems.Intake
+import org.ghrobotics.frc2020.subsystems.arm.Arm
+import org.ghrobotics.frc2020.subsystems.drivetrain.Drivetrain
+import org.ghrobotics.frc2020.subsystems.drivetrain.TeeterTotterCommand
+import org.ghrobotics.frc2020.subsystems.intake.Intake
 import org.ghrobotics.lib.wrappers.FalconTimedRobot
 
-/**
- * Main robot class.
- */
 object Robot : FalconTimedRobot() {
 
-    // Constructor of the Robot class.
+    // Initialize Subsystems
     init {
-        // Add the drivetrain to the subsystem handler
         +Drivetrain
         +Intake
+        +Arm
     }
 
     // Runs once when robot boots up
@@ -32,7 +23,7 @@ object Robot : FalconTimedRobot() {
 
     // Runs once when autonomous period starts
     override fun autonomousInit() {
-
+        TeeterTotterCommand().schedule()
     }
 
     // Runs once when teleop period starts
