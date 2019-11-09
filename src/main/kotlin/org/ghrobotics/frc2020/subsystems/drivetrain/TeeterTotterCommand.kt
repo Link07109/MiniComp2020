@@ -1,5 +1,6 @@
 package org.ghrobotics.frc2020.subsystems.drivetrain
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import org.ghrobotics.frc2020.Constants
 import org.ghrobotics.lib.commands.FalconCommand
 
@@ -7,32 +8,35 @@ import org.ghrobotics.lib.commands.FalconCommand
  * Command to auto-balance on the teeter totter
  */
 class TeeterTotterCommand : FalconCommand(Drivetrain) {
-    private val setpoint = 0.0
+    private val setpoint = 0.0 // Drivetrain.navx.roll
 
-    var pitchVoltage = 0.0
-    var previousPitchError = 0.0
+    private var output = 0.0
+    private var error = 0.0
+    private var prevError = 0.0
+
+    private var p = 0.0
+    private var d = 0.0
 
     override fun initialize() = Drivetrain.navx.reset()
 
     override fun execute() {
-        // Depending on navx orientation on the robot it can be either pitch or roll
-        // Error will be negative going forwards, positive going backwards
-        val pitchError = setpoint - Drivetrain.navx.pitch
+        error = setpoint - Drivetrain.navx.roll
 
-        val pitchP = Constants.Drivetrain.kP * pitchError
-        val pitchD = Constants.Drivetrain.kD * (pitchError - previousPitchError) / 0.02
+        p = Constants.Drivetrain.kP * error
+//        d = Constants.Drivetrain.kD * (error - prevError) / 0.02 // 20ms
 
-        pitchVoltage = pitchP + pitchD
-        previousPitchError = pitchError
+        output = p //+ d
+        prevError = error
 
-        Drivetrain.setVoltage(-pitchVoltage, -pitchVoltage)
+        Drivetrain.arcadeDrive(-output, 0.0)
 
-        println("pitch voltage: $pitchVoltage")
-        println("navx pitch: ${Drivetrain.navx.pitch}")
+        println("output: $output")
+        println("error: $error")
+        SmartDashboard.putNumber("navx roll:", Drivetrain.navx.roll.toDouble())
     }
 
     override fun isFinished(): Boolean {
-        return false // abs(pitchVoltage) <= 5
+        return false // abs(output) <= 5
     }
 
     override fun end(interrupted: Boolean) = Drivetrain.setNeutral()

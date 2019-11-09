@@ -73,38 +73,12 @@ object Drivetrain : FalconWestCoastDrivetrain() {
             motor.brakeMode = true
             motor.talonSRX.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10)
         }
-        setClosedLoopGains()
 
         defaultCommand = ManualDriveCommand()
     }
 
-    fun setVoltage(leftOutput: Double, rightOutput: Double) {
-        leftMotor.setVoltage(leftOutput.volts)
-        rightMotor.setVoltage(rightOutput.volts)
-    }
-
     // Emergency management
-    override fun activateEmergency() = zeroClosedLoopGains()
+    override fun activateEmergency() {}
 
-    override fun recoverFromEmergency() = setClosedLoopGains()
-
-    /**
-     * Configures closed loop gains for the drivetrain.
-     */
-    private fun setClosedLoopGains() {
-//        listOf(leftMotor, rightMotor).forEach { motor ->
-//            motor.kP = Constants.Drivetrain.kP
-//            motor.kD = Constants.Drivetrain.kD
-//        }
-    }
-
-    /**
-     * Zeros all feedback gains for the drivetrain.
-     */
-    private fun zeroClosedLoopGains() {
-//        listOf(leftMotor, rightMotor).forEach { motor ->
-//            motor.kP = 0.0
-//            motor.kD = 0.0
-//        }
-    }
+    override fun recoverFromEmergency() {}
 }

@@ -18,7 +18,7 @@ object Robot : FalconTimedRobot() {
 
     // Runs once when robot boots up
     override fun robotInit() {
-
+        Drivetrain.navx.reset()
     }
 
     // Runs once when autonomous period starts
