@@ -1,6 +1,5 @@
 package org.ghrobotics.frc2020.subsystems.drivetrain
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import com.ctre.phoenix.motorcontrol.StatusFrame
 import com.kauailabs.navx.frc.AHRS
 import edu.wpi.first.wpilibj.SPI
@@ -10,7 +9,6 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry
 import org.ghrobotics.frc2020.Constants
 import org.ghrobotics.lib.mathematics.units.Meter
 import org.ghrobotics.lib.mathematics.units.SIUnit
-import org.ghrobotics.lib.mathematics.units.derived.volts
 import org.ghrobotics.lib.mathematics.units.nativeunit.DefaultNativeUnitModel
 import org.ghrobotics.lib.motors.ctre.FalconSRX
 import org.ghrobotics.lib.physics.MotorCharacterization
@@ -50,16 +48,16 @@ object Drivetrain : FalconWestCoastDrivetrain() {
         rightSlave.outputInverted = true
 
         listOf(leftMotor, leftSlave, rightMotor, rightSlave).forEach { motor ->
-            // Configure Encoder
-            motor.feedbackSensor = FeedbackDevice.QuadEncoder
-//            motor.encoderPhase = Constants.Drivetrain.kDriveSensorPhase
-//            motor.sensorPosition = 0.meters
-//
-//            motor.peakForwardOutput = 1.0
-//            motor.peakReverseOutput = -1.0
-//
-//            motor.nominalForwardOutput = 0.0
-//            motor.nominalReverseOutput = 0.0
+            motor.talonSRX.selectedSensorPosition = 0
+
+            motor.talonSRX.configPeakOutputForward(1.0)
+            motor.talonSRX.configPeakOutputReverse(-1.0)
+
+            motor.talonSRX.configNominalOutputForward(0.0)
+            motor.talonSRX.configNominalOutputReverse(0.0)
+
+            motor.brakeMode = true
+            motor.talonSRX.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10)
 
             motor.configCurrentLimit(
                     true,
@@ -69,9 +67,6 @@ object Drivetrain : FalconWestCoastDrivetrain() {
                             Constants.Drivetrain.kContinuousCurrentLimit
                     )
             )
-
-            motor.brakeMode = true
-            motor.talonSRX.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10)
         }
 
         defaultCommand = ManualDriveCommand()

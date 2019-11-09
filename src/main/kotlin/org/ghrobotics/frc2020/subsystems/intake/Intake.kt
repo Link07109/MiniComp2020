@@ -25,9 +25,14 @@ object Intake : FalconSubsystem() {
     }
 
     // Sets the solenoids to hold the cubes in place
-    fun clampSolenoids(intake: Boolean) {
+    fun clampSolenoids() {
         listOf(solenoid1, solenoid2, solenoid3).forEach { solenoid ->
-            solenoid.state = if (intake) FalconSolenoid.State.Forward else FalconSolenoid.State.Reverse
+            // Set them to their opposites
+            solenoid.state = when (solenoid.state) {
+                FalconSolenoid.State.Forward -> FalconSolenoid.State.Reverse
+                FalconSolenoid.State.Reverse -> FalconSolenoid.State.Forward
+                FalconSolenoid.State.Off -> FalconSolenoid.State.Forward
+            }
         }
     }
 
@@ -36,10 +41,12 @@ object Intake : FalconSubsystem() {
         val intakeSlave = FalconSRX(Constants.Intake.kRightWheelId, DefaultNativeUnitModel)
         intakeSlave.follow(intakeMaster)
 
-        intakeMaster.outputInverted = true
+        intakeMaster.outputInverted = true // Assuming master is the right one
         intakeSlave.outputInverted = false
 
         listOf(intakeMaster, intakeSlave).forEach { motor ->
+            motor.brakeMode = true
+
             motor.configCurrentLimit(
                     true,
                     FalconSRX.CurrentLimitConfig(
@@ -48,11 +55,8 @@ object Intake : FalconSubsystem() {
                             Constants.Intake.kContinuousCurrentLimit
                     )
             )
-
-            motor.brakeMode = true
         }
 
-//        defaultCommand = IntakeCubesCommand()
-        defaultCommand = IntakeAndClampCommand()
+        defaultCommand = DefaultIntakeCommand()
     }
 }

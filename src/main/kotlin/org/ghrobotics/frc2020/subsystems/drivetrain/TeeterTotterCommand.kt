@@ -15,9 +15,7 @@ class TeeterTotterCommand : FalconCommand(Drivetrain) {
     private var prevError = 0.0
 
     private var p = 0.0
-    private var d = 0.0
-
-    override fun initialize() = Drivetrain.navx.reset()
+//    private var d = 0.0
 
     override fun execute() {
         error = setpoint - Drivetrain.navx.roll
@@ -36,7 +34,7 @@ class TeeterTotterCommand : FalconCommand(Drivetrain) {
     }
 
     override fun isFinished(): Boolean {
-        return false // abs(output) <= 5
+        return false // abs(output) <= 2
     }
 
     override fun end(interrupted: Boolean) = Drivetrain.setNeutral()

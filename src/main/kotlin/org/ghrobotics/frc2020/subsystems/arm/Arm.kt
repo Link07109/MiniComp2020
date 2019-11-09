@@ -16,8 +16,7 @@ import org.ghrobotics.lib.utils.Source
 /**
  * Represents the arm of the robot.
  */
-object Arm : FalconSubsystem(), EmergencyHandleable {
-    // Create Motor
+object Arm : FalconSubsystem(), EmergencyHandleable { // this is based on crossfire's arm code
     private val armMotor = FalconSRX(Constants.Arm.kArmId, Constants.Arm.kNativeUnitModel)
 
     private var wantedState: ArmState = ArmState.Nothing
@@ -35,11 +34,28 @@ object Arm : FalconSubsystem(), EmergencyHandleable {
     // Initialize motor configs
     init {
         with(armMotor) {
+            outputInverted = true
+            brakeMode = true
+
+            // Motion magic
+            motionProfileCruiseVelocity = Constants.Arm.kCruiseVelocity
+            motionProfileAcceleration = Constants.Arm.kAcceleration
+
             // Configure Encoder
             feedbackSensor = FeedbackDevice.Analog
-//            encoderPhase = false
+            talonSRX.setSensorPhase(false)
 
-            outputInverted = true
+            // Analog encoder hackery
+            armMotor.talonSRX.configFeedbackNotContinuous(true, Constants.kCTRETimeout)
+
+            armMotor.talonSRX.configForwardSoftLimitThreshold(220)
+            armMotor.talonSRX.configForwardSoftLimitEnable(false)
+
+            armMotor.talonSRX.configReverseSoftLimitThreshold (-40)
+            armMotor.talonSRX.configReverseSoftLimitEnable(false)
+
+            talonSRX.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10)
+            talonSRX.selectProfileSlot(0, 0)
 
             configCurrentLimit(
                     true,
@@ -49,28 +65,9 @@ object Arm : FalconSubsystem(), EmergencyHandleable {
                             Constants.Arm.kContinuousCurrentLimit
                     )
             )
-
-            brakeMode = true
-
-            // Motion magic
-            motionProfileCruiseVelocity = Constants.Arm.kCruiseVelocity
-            motionProfileAcceleration = Constants.Arm.kAcceleration
-
-            // Analog encoder hackery
-//            configFeedbackNotContinuous(true, Constants.kCTRETimeout)
-//
-//            softLimitForward = 220.degrees.toNativeUnitPosition(Constants.kArmNativeUnitModel)
-//            softLimitForwardEnabled = false
-//
-//            softLimitReverse = (-40).degrees.toNativeUnitPosition(Constants.kArmNativeUnitModel)
-//            softLimitReverseEnabled = false
-
-            talonSRX.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10)
-            talonSRX.selectProfileSlot(0, 0)
         }
-//        defaultCommand = DefaultArmCommand
 
-        setClosedLoopGains()
+//        defaultCommand = DefaultArmCommand
     }
 
     /**
@@ -90,7 +87,7 @@ object Arm : FalconSubsystem(), EmergencyHandleable {
 //
 //            Kg * position.cos * experiencedAcceleration
 //        } else {
-//            0.0
+//            0.0.volts
 //        }
 
         // UPDATE STATE
@@ -107,37 +104,9 @@ object Arm : FalconSubsystem(), EmergencyHandleable {
     }
 
     // Emergency Management
-    override fun activateEmergency() {
-        zeroOutputs()
-        zeroClosedLoopGains()
-    }
+    override fun activateEmergency() {}
 
-    override fun recoverFromEmergency() = setClosedLoopGains()
-
-    private fun zeroOutputs() {
-        wantedState = ArmState.Nothing
-    }
-
-    /**
-     * Configures closed loop gains for the arm.
-     */
-    private fun setClosedLoopGains() {
-//        armMotor.run {
-//            config_kP(0, Constants.kP)
-//            config_kD(0, Constants.kD)
-//            config_kF(0, Constants.kF)
-//        }
-    }
-
-    /**
-     * Zeros all feedback gains for the arm.
-     */
-    private fun zeroClosedLoopGains() {
-//        armMotor.run {
-//            config_kP(0, 0.0)
-//            config_kD(0, 0.0)
-//        }
-    }
+    override fun recoverFromEmergency() {}
 
     sealed class ArmState {
         object Nothing : ArmState()

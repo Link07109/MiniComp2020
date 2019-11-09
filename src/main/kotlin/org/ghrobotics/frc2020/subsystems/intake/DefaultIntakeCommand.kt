@@ -8,20 +8,18 @@ import org.ghrobotics.lib.wrappers.hid.kBumperRight
 import org.ghrobotics.lib.wrappers.hid.kY
 
 /**
- * Command to intake and hold cubes
+ * Default command that checks for input and calls other commands
  */
-class IntakeAndClampCommand : FalconCommand(Intake) {
+class DefaultIntakeCommand : FalconCommand(Intake) {
     override fun execute() {
-        // intake cubes part
-        val speed = if (shouldWheelIntake()) 1.0 else if (shouldWheelOuttake()) -1.0 else 0.0
+        when {
+            // Intake cubes
+            shouldWheelIntake() -> IntakeCubesCommand(true).schedule()
+            shouldWheelOuttake() -> IntakeCubesCommand(false).schedule()
 
-        Intake.wheelIntake(speed)
-
-        // clamp cubes part
-        var solenoidToggle = false
-        if (shouldClampCubes()) solenoidToggle = !solenoidToggle
-
-        Intake.clampSolenoids(solenoidToggle)
+            // Clamp cubes
+            shouldClampCubes() -> ClampCubesCommand().schedule()
+        }
     }
 
     companion object {
