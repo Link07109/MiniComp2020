@@ -84,7 +84,7 @@ object Constants {
         val kNativeUnitModel = NativeUnitLengthModel(1440.nativeUnits, kWheelRadius)
 
         // PID
-        const val kP = 0.2
+        const val kP = 0.035 // .2
         const val kD = 0.3 // .18
 
         // Current Limiting
