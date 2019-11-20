@@ -1,11 +1,13 @@
 package org.ghrobotics.frc2020
 
+import edu.wpi.first.wpilibj.command.CommandGroup
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import org.ghrobotics.frc2020.subsystems.arm.Arm
 import org.ghrobotics.frc2020.subsystems.drivetrain.DriveUntilRollCommand
 import org.ghrobotics.frc2020.subsystems.drivetrain.Drivetrain
 import org.ghrobotics.frc2020.subsystems.drivetrain.TeeterTotterCommand
 import org.ghrobotics.frc2020.subsystems.intake.Intake
+import org.ghrobotics.lib.commands.sequential
 import org.ghrobotics.lib.wrappers.FalconTimedRobot
 
 object Robot : FalconTimedRobot() {
@@ -25,8 +27,11 @@ object Robot : FalconTimedRobot() {
     // Runs once when autonomous period starts
     override fun autonomousInit() {
         Drivetrain.navx.reset()
-        DriveUntilRollCommand(5.0, 0.5).withTimeout(2.0).schedule()
-        TeeterTotterCommand().schedule()
+
+        sequential {
+            +DriveUntilRollCommand(6.0, 0.35)
+            +TeeterTotterCommand()
+        }
     }
 
     // Runs once when teleop period starts

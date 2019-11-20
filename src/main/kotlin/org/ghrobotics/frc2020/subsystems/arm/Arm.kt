@@ -19,7 +19,7 @@ import org.ghrobotics.lib.utils.Source
 object Arm : FalconSubsystem(), EmergencyHandleable { // this is based on crossfire's arm code
     private val armMotor = FalconSRX(Constants.Arm.kArmId, Constants.Arm.kNativeUnitModel)
 
-    private var wantedState: ArmState = ArmState.Nothing
+    var wantedState: ArmState = ArmState.Nothing
     var currentState: ArmState = ArmState.Nothing
         private set
 
@@ -42,8 +42,8 @@ object Arm : FalconSubsystem(), EmergencyHandleable { // this is based on crossf
             motionProfileAcceleration = Constants.Arm.kAcceleration
 
             // Configure Encoder
-            feedbackSensor = FeedbackDevice.Analog
-            talonSRX.setSensorPhase(false)
+//            feedbackSensor = FeedbackDevice.Analog
+//            talonSRX.setSensorPhase(false)
 
             // Analog encoder hackery
             armMotor.talonSRX.configFeedbackNotContinuous(true, Constants.kCTRETimeout)
@@ -67,7 +67,7 @@ object Arm : FalconSubsystem(), EmergencyHandleable { // this is based on crossf
             )
         }
 
-//        defaultCommand = DefaultArmCommand
+        defaultCommand = DefaultArmCommand()
     }
 
     /**
@@ -75,8 +75,8 @@ object Arm : FalconSubsystem(), EmergencyHandleable { // this is based on crossf
      * Used to calculate the acceleration of the arm.
      */
     override fun periodic() {
-        position = armMotor.talonSRX.selectedSensorPosition.radians
-        velocity = armMotor.talonSRX.selectedSensorVelocity.radians.velocity
+//        position = armMotor.talonSRX.selectedSensorPosition.radians
+//        velocity = armMotor.talonSRX.selectedSensorVelocity.radians.velocity
 
 //        arbitraryFeedForward = if (!Robot.emergencyActive) {
 //            val experiencedAcceleration = Constants.kAccelerationDueToGravity

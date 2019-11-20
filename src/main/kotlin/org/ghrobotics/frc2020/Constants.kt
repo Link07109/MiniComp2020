@@ -71,9 +71,9 @@ object Constants {
      */
     object Drivetrain {
         // Motor Ids
-        const val kLeftMasterId = 3
+        const val kLeftMasterId = 3 // my bot // 1 = pracheeti bot
         const val kLeftSlaveId = 1
-        const val kRightMasterId = 2
+        const val kRightMasterId = 2 // my bot // 3 = pracheeti bot
         const val kRightSlaveId = 4
 
         val kWheelRadius = 3.inches
@@ -81,8 +81,8 @@ object Constants {
         val kNativeUnitModel = NativeUnitLengthModel(1440.nativeUnits, kWheelRadius)
 
         // PID
-        const val kP = 0.33 // .2
-//        const val kD = 0.3 // .18
+        const val kP = 0.025
+        const val kD = 0.001
 
         // Current Limiting
         val kPeakCurrentLimit = 68.amps

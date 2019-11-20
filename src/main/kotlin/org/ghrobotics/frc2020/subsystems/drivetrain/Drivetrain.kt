@@ -48,7 +48,7 @@ object Drivetrain : FalconWestCoastDrivetrain() {
         rightSlave.outputInverted = true
 
         listOf(leftMotor, leftSlave, rightMotor, rightSlave).forEach { motor ->
-            motor.talonSRX.selectedSensorPosition = 0
+//            motor.talonSRX.selectedSensorPosition = 0
 
             motor.talonSRX.configPeakOutputForward(1.0)
             motor.talonSRX.configPeakOutputReverse(-1.0)

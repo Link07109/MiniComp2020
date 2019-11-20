@@ -13,7 +13,6 @@ import org.ghrobotics.lib.wrappers.hid.kX
  */
 class ManualDriveCommand : FalconCommand(Drivetrain) {
     override fun execute() {
-        println("navx roll: ${Drivetrain.navx.roll}")
         Drivetrain.curvatureDrive(-linearSource(), curvatureSource(), quickTurnSource())
     }
 
