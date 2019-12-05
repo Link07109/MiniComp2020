@@ -1,6 +1,5 @@
 package org.ghrobotics.frc2020.subsystems.drivetrain
 
-import com.ctre.phoenix.motorcontrol.StatusFrame
 import com.kauailabs.navx.frc.AHRS
 import edu.wpi.first.wpilibj.SPI
 import edu.wpi.first.wpilibj.controller.RamseteController
@@ -47,19 +46,10 @@ object Drivetrain : FalconWestCoastDrivetrain() {
         rightMotor.outputInverted = true
         rightSlave.outputInverted = true
 
-        listOf(leftMotor, leftSlave, rightMotor, rightSlave).forEach { motor ->
-//            motor.talonSRX.selectedSensorPosition = 0
+        listOf(leftMotor, leftSlave, rightMotor, rightSlave).forEach {
+            it.brakeMode = true
 
-            motor.talonSRX.configPeakOutputForward(1.0)
-            motor.talonSRX.configPeakOutputReverse(-1.0)
-
-            motor.talonSRX.configNominalOutputForward(0.0)
-            motor.talonSRX.configNominalOutputReverse(0.0)
-
-            motor.brakeMode = true
-            motor.talonSRX.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10)
-
-            motor.configCurrentLimit(
+            it.configCurrentLimit(
                     true,
                     FalconSRX.CurrentLimitConfig(
                             Constants.Drivetrain.kPeakCurrentLimit,

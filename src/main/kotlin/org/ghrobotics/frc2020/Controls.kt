@@ -14,7 +14,7 @@ object Controls {
      * Left Bumper: wheel intake
      * Right Bumper: wheel outtake
      */
-    // TODO arm subsystem and presets
+    // TODO winch subsystem and presets
 
     val driverController = xboxController(0) { }
 }

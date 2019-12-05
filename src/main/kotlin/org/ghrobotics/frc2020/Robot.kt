@@ -1,12 +1,11 @@
 package org.ghrobotics.frc2020
 
-import edu.wpi.first.wpilibj.command.CommandGroup
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
-import org.ghrobotics.frc2020.subsystems.arm.Arm
 import org.ghrobotics.frc2020.subsystems.drivetrain.DriveUntilRollCommand
 import org.ghrobotics.frc2020.subsystems.drivetrain.Drivetrain
 import org.ghrobotics.frc2020.subsystems.drivetrain.TeeterTotterCommand
 import org.ghrobotics.frc2020.subsystems.intake.Intake
+import org.ghrobotics.frc2020.subsystems.winch.Winch
 import org.ghrobotics.lib.commands.sequential
 import org.ghrobotics.lib.wrappers.FalconTimedRobot
 
@@ -16,7 +15,7 @@ object Robot : FalconTimedRobot() {
     init {
         +Drivetrain
         +Intake
-        +Arm
+        +Winch
     }
 
     // Runs once when robot boots up
@@ -31,7 +30,7 @@ object Robot : FalconTimedRobot() {
         sequential {
             +DriveUntilRollCommand(6.0, 0.35)
             +TeeterTotterCommand()
-        }
+        }.schedule()
     }
 
     // Runs once when teleop period starts

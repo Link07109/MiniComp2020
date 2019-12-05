@@ -23,27 +23,19 @@ object Constants {
     const val kCTRETimeout = 10
 
     /**
-     * Constants for the arm.
+     * Constants for the winch.
      */
-    object Arm {
+    object Winch {
         // Motor Ids
-        const val kArmId = 7
+        const val kWinchId = 5
 
-        // Motion Magic
-        val kCruiseVelocity = 260.156 * 1.0.degrees.velocity
-        val kAcceleration = 300.0 * 1.0.degrees.acceleration
-
-        val kNativeUnitModel = NativeUnitRotationModel(1024.nativeUnits)
-
-        // PID
-        const val kP = 3.5
-        const val kD = 700.0
-        const val kF = 0.0
+        val kNativeUnitModel = NativeUnitRotationModel(1024.nativeUnits) // temp
 
         // Current Limiting
-        val kPeakCurrentLimit = 0.amps
-        val kPeakCurrentLimitDuration = 0.milli.seconds
-        val kContinuousCurrentLimit = 15.amps
+        // based on falcon heavy climber
+//        val kPeakCurrentLimit = 0.amps
+//        val kPeakCurrentLimitDuration = 0.milli.seconds
+//        val kContinuousCurrentLimit = 40.amps
     }
 
     /**
@@ -52,14 +44,10 @@ object Constants {
     object Intake {
         // Pneumatic Ids
         const val kPCMId = 41
-        const val kIntakeSolenoid1Id = 1
-        const val kIntakeSolenoid2Id = 2
-        const val kIntakeSolenoid3Id = 3
+        const val kIntakeSolenoidId = 0
 
         // Motor Ids
-        const val kLeftWheelId = 5
-        const val kRightWheelId = 6
-
+        const val kIntakeId = 6
         // Current Limiting
         val kPeakCurrentLimit = 58.amps // crossfire has no data on this
         val kPeakCurrentLimitDuration = 250.milli.seconds // crossfire has no data on this
@@ -71,9 +59,9 @@ object Constants {
      */
     object Drivetrain {
         // Motor Ids
-        const val kLeftMasterId = 3 // my bot // 1 = pracheeti bot
+        const val kLeftMasterId = 3
         const val kLeftSlaveId = 1
-        const val kRightMasterId = 2 // my bot // 3 = pracheeti bot
+        const val kRightMasterId = 2
         const val kRightSlaveId = 4
 
         val kWheelRadius = 3.inches
