@@ -17,12 +17,6 @@ import org.ghrobotics.lib.mathematics.units.operations.times
  */
 object Constants {
     /**
-     * Constants for general use.
-     */
-    const val kAccelerationDueToGravity = 9.80665
-    const val kCTRETimeout = 10
-
-    /**
      * Constants for the winch.
      */
     object Winch {
