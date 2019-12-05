@@ -11,6 +11,11 @@ import org.ghrobotics.lib.wrappers.FalconTimedRobot
 
 object Robot : FalconTimedRobot() {
 
+    private val autoCommand = sequential {
+        +DriveUntilRollCommand(6.0, 0.35)
+        +TeeterTotterCommand()
+    }
+
     // Initialize Subsystems
     init {
         +Drivetrain
@@ -27,14 +32,13 @@ object Robot : FalconTimedRobot() {
     override fun autonomousInit() {
         Drivetrain.navx.reset()
 
-        sequential {
-            +DriveUntilRollCommand(6.0, 0.35)
-            +TeeterTotterCommand()
-        }.schedule()
+        autoCommand.schedule()
     }
 
     // Runs once when teleop period starts
-    override fun teleopInit() {}
+    override fun teleopInit() {
+        autoCommand.cancel()
+    }
 
     // Runs once when robot is disabled
     override fun disabledInit() {}

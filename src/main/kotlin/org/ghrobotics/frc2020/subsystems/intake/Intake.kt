@@ -19,7 +19,7 @@ object Intake : FalconSubsystem() {
         intakeMotor.setDutyCycle(percent)
     }
 
-    // Sets the solenoids to hold the cubes in place
+    // Switches the solenoid state. Used to hold the cubes in place.
     fun clampSolenoids() {
         intakeSolenoid.state = when (intakeSolenoid.state) {
             FalconSolenoid.State.Forward -> FalconSolenoid.State.Reverse

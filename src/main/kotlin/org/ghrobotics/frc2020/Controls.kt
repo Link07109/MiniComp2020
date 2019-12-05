@@ -12,7 +12,6 @@ object Controls {
      * Left Trigger: winch outtake
      * Right Trigger: winch intake
      */
-    // TODO winch subsystem and presets
 
     val driverController = xboxController(0) { }
 }
